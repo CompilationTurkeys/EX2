@@ -96,4 +96,4 @@ ROWID 			= R1 | R2 | R3
 
 }
 
-[^]                 { "Lexical error: illegal character "+"'"+yytext()+"'"); System.exit(-1);}
+[^]                 { System.out.println("Lexical error: illegal character "+"'"+yytext()+"'"); System.exit(-1);}

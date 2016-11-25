@@ -4,7 +4,7 @@ public class Matrix {
 	private Fraction[][] _matrix;
 	private Fraction _one=new Fraction(1, 1);
 		
-	private Matrix(Fraction[][] matrix){
+	public Matrix(Fraction[][] matrix){
 			
 	this._matrix=matrix;
 			
@@ -14,7 +14,7 @@ public class Matrix {
 	{
 		for(int i=0;i<3;i++)
 		{
-			this._matrix[row1][i]= this._matrix[row1][i].addition(this._matrix[row2][i].multiply(factor));
+			this._matrix[row1][i]= _matrix[row1][i].addition(this._matrix[row2][i].multiply(factor));
 		}
 	}
 	

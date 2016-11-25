@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Main {
 	
@@ -19,7 +20,12 @@ public class Main {
 		String rowOpsFileName = args[1];
 		String outputMatrixFileName = args[2];
 		
-		Matrix inputMat = parseMatrixFile(inputMatrixFileName);
+		try {
+			Matrix inputMat = parseMatrixFile(inputMatrixFileName);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		
 		try
@@ -52,11 +58,18 @@ public class Main {
 		
 		String matString = br.readLine();
 		
-		String[] MatLines = mat.split(";");
+		matString.substring(1, matString.length()-1);
+		
+		String[] MatLines = matString.split(";");
 		
 		Fraction[][] matrix = new Fraction[MAT_SIZE][MAT_SIZE];
 		
-		return null;
+		Arrays.asList(MatLines).stream().forEach(lineStr -> {
+			List<String> componets = Arrays.asList(lineStr.split(" "));
+			
+		});
+		
+		return new Matrix(matrix);
 	}
 
 }

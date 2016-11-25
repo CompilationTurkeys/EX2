@@ -1,4 +1,3 @@
-import Main.Fraction;
 
 public class Matrix {
 		

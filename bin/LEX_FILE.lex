@@ -63,7 +63,7 @@ import java_cup.runtime.*;
 LINETERMINATOR	= \r|\n|\r\n
 WHITESPACE		= {LINETERMINATOR} | [ \t\f]
 INTEGER			= 0 | [1-9][0-9]*
-ROW_ID 			= R1 | R2 | R3
+ROWID 			= R1 | R2 | R3
 
 
 /******************************/
@@ -90,7 +90,7 @@ ROW_ID 			= R1 | R2 | R3
 "<->"				{ return symbol(sym.DOUBLEARROW);}
 
 
-{ROW_ID}			{ return symbol(sym.ROWID, new String(yytext()));}
+{ROWID}			{ return symbol(sym.ROWID, new String(yytext()));}
 {INTEGER}			{ return symbol(sym.INTEGER, new Integer(yytext()));}
 {WHITESPACE}		{ /* just skip what was found, do nothing */ }
 

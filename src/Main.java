@@ -1,5 +1,7 @@
 
-public class PARSER {
+public class Main {
+	
+	public Matrix inputMat
 	
 	/**
 	 * represents a simplified fraction
@@ -51,6 +53,27 @@ public class PARSER {
 		String inputMatrixFileName = args[0];
 		String rowOpsFileName = args[1];
 		String outputMatrixFileName = args[2];
+		
+		
+		
+		try
+         {
+                 
+                 Lexer lexer = new Lexer(new FileReader(argv[0]));
+ 
+                 Symbol token = lexer.next_token();
+                 
+                 while (token.sym != sym.EOF)
+                 {
+                         token = lexer.next_token();
+                 }
+         }
+                      
+         catch (Exception e)
+         {
+                 e.printStackTrace();
+         }
+
 		
 		
 

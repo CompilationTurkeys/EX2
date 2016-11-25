@@ -1,8 +1,7 @@
 
 public class Matrix {
 		
-	private Fraction[][] _matrix;
-	private Fraction _one=new Fraction(1, 1);
+	Fraction[][] _matrix;
 		
 	public Matrix(Fraction[][] matrix){
 			
@@ -32,6 +31,9 @@ public class Matrix {
 			this._matrix[row1][i]=this._matrix[row2][i];
 			this._matrix[row2][i]=temp;
 		}
+=======
+		this._matrix[rowNum][0]= this._matrix[rowNum][0].addition(rowToAdd[0]);
+>>>>>>> 8d015978d8e873f01f3dae25295bff5aed647283
 	}
 	
 }

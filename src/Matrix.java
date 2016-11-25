@@ -31,9 +31,7 @@ public class Matrix {
 			this._matrix[row1][i]=this._matrix[row2][i];
 			this._matrix[row2][i]=temp;
 		}
-=======
-		this._matrix[rowNum][0]= this._matrix[rowNum][0].addition(rowToAdd[0]);
->>>>>>> 8d015978d8e873f01f3dae25295bff5aed647283
+
 	}
 	
 }

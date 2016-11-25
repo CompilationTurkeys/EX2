@@ -599,7 +599,7 @@ class Lexer implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { "Lexical error: illegal character "+"'"+yytext()+"'"); System.exit(-1);
+            { System.out.println("Lexical error: illegal character "+"'"+yytext()+"'"); System.exit(-1);
             }
           case 9: break;
           case 2: 

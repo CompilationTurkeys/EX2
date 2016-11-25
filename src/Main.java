@@ -1,7 +1,7 @@
+import java.io.FileReader;
 
 public class Main {
 	
-	public Matrix inputMat
 	
 	/**
 	 * represents a simplified fraction
@@ -11,6 +11,14 @@ public class Main {
 	public class Fraction {
 		private int numerator;
 		private int denominator;
+
+		public int getNumerator() {
+			return numerator;
+		}
+
+		public int getDenominator() {
+			return denominator;
+		}
 
 		public Fraction(int numerator, int denominator) {
 			this.numerator = numerator;
@@ -47,18 +55,20 @@ public class Main {
 	}
 
 	
+	
 	public static void main(String[] args) {
 		
 		String inputMatrixFileName = args[0];
 		String rowOpsFileName = args[1];
 		String outputMatrixFileName = args[2];
 		
+		Matrix inputMat = parseMatrixFile(inputMatrixFileName);
 		
 		
 		try
          {
                  
-                 Lexer lexer = new Lexer(new FileReader(argv[0]));
+                 Lexer lexer = new Lexer(new FileReader(rowOpsFileName));
  
                  Symbol token = lexer.next_token();
                  

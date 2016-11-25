@@ -1,6 +1,11 @@
 
 public class PARSER {
 	
+	/**
+	 * represents a simplified fraction
+	 * @author bktomer
+	 *
+	 */
 	private class Fraction {
 		int numerator;
 		int denominator;
@@ -39,8 +44,15 @@ public class PARSER {
 		}
 	}
 
+	
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		String inputMatrixFileName = args[0];
+		String rowOpsFileName = args[1];
+		String outputMatrixFileName = args[2];
+		
+		
 
 	}
 

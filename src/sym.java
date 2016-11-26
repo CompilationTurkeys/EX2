@@ -8,7 +8,9 @@ public interface sym {
   
   public static final int ARROW = 4;
   public static final int DOUBLEARROW = 5;
-  public static final int ROWID = 6;
-  public static final int INTEGER = 7;
+  public static final int R1 = 6;
+  public static final int R2 = 7;
+  public static final int R3 = 8;
+  public static final int INTEGER = 9;
 }
 

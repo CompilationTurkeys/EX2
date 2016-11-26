@@ -1,21 +1,26 @@
 
 public class Parser {
-	public Lexer lexer;
-	public int value;
-	public Parser(Lexer lexer) {
-	 this.lexer = lexer;	
+	
+	public Lexer 		_lexer;
+	public Fraction[][] _outputMatrix;
+	public Matrix 		_inputMatrix;
+	public static final int MAT_SIZE = 3;
+
+	public Parser(Lexer lexer, Matrix inputMat){
+		this._lexer = lexer;
+		this._outputMatrix = new Fraction[MAT_SIZE][MAT_SIZE];
+		this._inputMatrix = inputMat;
 	}
 	
-	public int Parse() {
+	public Fraction[][] parse(){
 		S();
-		return this.value;
+		return _outputMatrix;	
 	}
 	
 	public void S() {
-		switch(lexer.next_token()):
-			
+		
 	}
-	
+
 	public void R() {
 		
 	}

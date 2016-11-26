@@ -63,8 +63,6 @@ import java_cup.runtime.*;
 LINETERMINATOR	= \r|\n|\r\n
 WHITESPACE		= {LINETERMINATOR} | [ \t\f]
 INTEGER			= 0 | [1-9][0-9]*
-ROWID 			= R1 | R2 | R3
-
 
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
@@ -88,12 +86,14 @@ ROWID 			= R1 | R2 | R3
 "-"					{ return symbol(sym.MINUS);}
 "<-"				{ return symbol(sym.ARROW);}
 "<->"				{ return symbol(sym.DOUBLEARROW);}
+"R1"				{ return symbol(sym.R1);}
+"R2"				{ return symbol(sym.R2);}
+"R3"				{ return symbol(sym.R3);}
 
 
-{ROWID}			{ return symbol(sym.ROWID, new String(yytext()));}
 {INTEGER}			{ return symbol(sym.INTEGER, new Integer(yytext()));}
 {WHITESPACE}		{ /* just skip what was found, do nothing */ }
 
 }
 
-[^]                 { "Lexical error: illegal character "+"'"+yytext()+"'"); System.exit(-1);}
+[^]                 { System.out.println("Lexical error: illegal character "+"'"+yytext()+"'"); System.exit(-1);}

@@ -5,7 +5,7 @@ public class Matrix {
 		
 	public Matrix(Fraction[][] matrix){
 			
-	this._matrix=matrix;
+		this._matrix=matrix;
 			
 	}
 	

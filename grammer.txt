@@ -1,0 +1,20 @@
+S -> R1 <- A | R2 <- B | R3 <- C
+
+R -> R1 | R2 | R3
+
+A -> NUM R1 | R1 OP F | > R
+
+B -> NUM R2 | R2 OP F | > R
+
+C -> NUM R3 | R3 OP F | > R
+
+NUM -> SIGN INT FRAC | epsilon
+
+SIGN -> MINUS | epsilon
+
+FRAC -> \ INT | epsilon
+
+F -> INT FRAC R | R
+
+OP -> PLUS | MINUS
+ 

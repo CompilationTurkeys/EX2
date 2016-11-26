@@ -15,9 +15,11 @@ public class Main {
 		String rowOpsFileName = args[1];
 		String outputMatrixFileName = args[2];
 		Matrix inputMat = null;
+		Matrix outputMat = null;
 		
 		try {
 			inputMat = parseMatrixFile(inputMatrixFileName);
+			
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -28,10 +30,9 @@ public class Main {
 			Lexer lexer = new Lexer(new FileReader(rowOpsFileName));
  			
 			Parser parser = new Parser(lexer, inputMat);
-			
-			Fraction[][] outputMat = parser.parse();
-                                  
-			writeMatToFile(outputMat, outputMatrixFileName);
+			parser.parse();
+			outputMat = parseRowOps(rowOpsFileName, inputMat);
+			writeMatToFile(outputMat._matrix, outputMatrixFileName);
          
                       
 		}catch (Exception e){
@@ -88,6 +89,49 @@ public class Main {
 		return new Matrix(matrix);
 	}
 
+	private static Matrix parseRowOps(String RowOperationsFileName, Matrix inputMatrix) throws IOException {
+				
+		BufferedReader br = new BufferedReader(new FileReader(new File(RowOperationsFileName)));
+		String opsString;
+				
+		Fraction[][] matrix = new Fraction[MAT_SIZE][MAT_SIZE];
+
+		while((opsString = br.readLine()) != null) { // iterate over lines of operations
+			opsString = opsString.replaceAll(" ","");
+			int curRow;
+			int newRow;
+			int newRow2;
+			curRow = opsString.charAt(1) - 1;
+			
+			if(opsString.charAt(4) == '>') { // case it's switching - R1<-->R2
+				newRow = (int)opsString.charAt(6) - 1;
+				inputMatrix.switchRows(curRow, newRow);
+			}
+			else { // case it's R1<--R2 or R1<--(FRAC)R1 or R1<--R1(OP)(FRAC)R2
+				
+				if(opsString.charAt(5) == 'R'&&  curRow != (newRow = Character.getNumericValue(opsString.charAt(6)))) { 
+					inputMatrix.putRow(curRow, newRow);// case it's R1<--R2
+				}
+				else if(curRow == (newRow = Character.getNumericValue(opsString.charAt(6)))) { // R1<--R1(OP)(FRAC)R2
+					// R1<--R1(OP)(FRAC)R2
+					char op = opsString.charAt(7);
+					String secondRow = opsString.substring(op+1);
+					Fraction factor = new Fraction(secondRow.split("R")[0]);
+					newRow2 = Integer.parseInt(secondRow.split("R")[0]);
+					inputMatrix.rowAddition(curRow, newRow2, factor);
+					
+				}
+				else { // R1<--(FRAC)R1
+					String rightSide = opsString.split("<-")[1];
+					Fraction factor = new Fraction(rightSide.split("R")[0]);
+					inputMatrix.rowMultiply(curRow, factor);
+				}
+			}
+		}
+		
+		br.close();
+		return new Matrix(matrix);
+	}
 }
 
 

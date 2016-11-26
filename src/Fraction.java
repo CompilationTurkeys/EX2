@@ -20,6 +20,19 @@ public class Fraction {
 		this.denominator = denominator;
 	}
 
+	public Fraction(String s) {
+		if (s.indexOf('/') != -1) {
+			this.numerator = Integer.parseInt(s.split("/")[0]);
+			this.denominator = Integer.parseInt(s.split("/")[1]);
+
+		}
+		else {
+			this.numerator = Integer.parseInt(s);
+			this.denominator = 1;
+		}
+	}
+	
+
 	public Fraction multiply(Fraction y) {
 
 		return (new Fraction(this.numerator * y.numerator, this.denominator * y.denominator)).simplify();

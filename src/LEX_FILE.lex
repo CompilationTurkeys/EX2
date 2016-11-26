@@ -85,7 +85,7 @@ INTEGER			= 0 | [1-9][0-9]*
 "+"					{ return symbol(sym.PLUS);}
 "-"					{ return symbol(sym.MINUS);}
 "<-"				{ return symbol(sym.ARROW);}
-"<->"				{ return symbol(sym.DOUBLEARROW);}
+">"				    { return symbol(sym.GTSIGN);}
 "R1"				{ return symbol(sym.R1);}
 "R2"				{ return symbol(sym.R2);}
 "R3"				{ return symbol(sym.R3);}

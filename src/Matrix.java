@@ -34,4 +34,12 @@ public class Matrix {
 
 	}
 	
+	public void putRow(int row1, int row2)
+	{
+		for(int i=0;i<3;i++){
+			this._matrix[row1][i]=this._matrix[row2][i];
+		}
+
+	}
+	
 }

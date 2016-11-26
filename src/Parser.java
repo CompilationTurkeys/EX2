@@ -1,7 +1,11 @@
+import java.io.IOException;
+
+import java_cup.runtime.Symbol;
 
 public class Parser {
 	
-	public Lexer 		_lexer;
+	public Lexer   _lexer;
+	private Symbol _tok;
 	public Fraction[][] _outputMatrix;
 	public Matrix 		_inputMatrix;
 	public static final int MAT_SIZE = 3;
@@ -12,52 +16,225 @@ public class Parser {
 		this._inputMatrix = inputMat;
 	}
 	
-	public Fraction[][] parse(){
+	public void parse() throws IOException{
 		S();
-		return _outputMatrix;	
 	}
 	
-	public void S() {
+	private void eat(int expectedToken) throws IOException{
+		if (_tok.sym == expectedToken){
+			_tok = _lexer.next_token();
+		}
+		else {
+			System.out.println(String.format("Error in position %d\n", _tok.parse_state));
+			System.out.println(String.format("Should be %s instead of %s", 
+					getTokenName(expectedToken),getTokenName(_tok.sym)));
+			System.exit(0);
+		}
+	}
+	
+	private String getTokenName(int token) {
+		switch(token){
+		case (0):
+			return "EOF";
+		case (1):
+			return "error";
+		case (2):
+			return "+";
+		case (3):
+			return "-";
+		case (4):
+			return "<-";
+		case (5):
+			return ">";
+		case (6):
+			return "R1";
+		case (7):
+			return "R2";
+		case (8):
+			return "R3";
+		case (9):
+			return "INT";
+		case (10):
+			return "LINE_TERMINATOR";
+		
+		}
+		
+		
+		return null;
+	}
+
+	public void S() throws IOException {
+		_tok = _lexer.next_token();
+		switch(_tok.sym){
+		
+		case(sym.R1):
+			_tok = _lexer.next_token();
+			eat(sym.ARROW);
+			A();
+			break;
+		case(sym.R2):
+			_tok = _lexer.next_token();
+			eat(sym.ARROW);
+			B();
+			break;
+		case(sym.R3):
+			_tok = _lexer.next_token();
+			eat(sym.ARROW);
+			C();
+			break;
+		default:
+			System.out.println(String.format("Error in position %d\n", _tok.parse_state));
+			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
+			System.exit(0);
+
+		}
 		
 	}
 
-	public void R() {
+	public void R() throws IOException {
+		_tok = _lexer.next_token();
+		switch(_tok.sym){
+		case (sym.R1):
+		case (sym.R2):
+		case (sym.R3):
+			_tok = _lexer.next_token();
+			endOfRowOperation((_tok=_lexer.next_token()).sym);
+			break;
+		default:
+			System.out.println(String.format("Error in position %d\n", _tok.parse_state));
+			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
+			System.exit(0);
+
+		}
 		
 	}
 	
-	public void A() {
-		
+	public void A() throws IOException {
+		_tok = _lexer.next_token();
+		switch(_tok.sym){
+		case (sym.R1):
+			OP();
+			F();
+			break;
+		case (sym.GTSIGN):
+			R();
+			break;
+		default:
+			NUM();
+			eat(sym.R1);
+			endOfRowOperation((_tok=_lexer.next_token()).sym);
+			break;
+		}
 	}
 	
-	public void B() {
+	private void endOfRowOperation(int token ) throws IOException {
+		switch(token){
+		case (sym.EOF):
+			break;
+		case (sym.LINE_TERMINATOR):
+			S();
+			break;
+		}
+			
 		
 	}
-	
-	public void C() {
-		
+
+	public void B() throws IOException {
+		_tok = _lexer.next_token();
+		switch(_tok.sym){
+		case (sym.R2):
+			OP();
+			F();
+			break;
+		case (sym.GTSIGN):
+			R();
+			break;
+		default:
+			NUM();
+			eat(sym.R2);
+			endOfRowOperation((_tok=_lexer.next_token()).sym);
+			break;
+		}
 	}
 	
-	public void NUM() {
-		
+	public void C() throws IOException {
+		_tok = _lexer.next_token();
+		switch(_tok.sym){
+		case (sym.R3):
+			OP();
+			F();
+			break;
+		case (sym.GTSIGN):
+			R();
+			break;
+		default:
+			NUM();
+			eat(sym.R3);
+			endOfRowOperation((_tok=_lexer.next_token()).sym);
+			break;
+		}
+	}
+	
+	public void NUM() throws IOException {
+		switch (_tok.sym){
+		case (sym.MINUS):
+			_tok = _lexer.next_token();
+			eat(sym.INTEGER);
+			FRAC();
+			break;
+		case (sym.INTEGER):
+			FRAC();
+			break;
+		default:
+			System.out.println(String.format("Error in position %d\n", _tok.parse_state));
+			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
+			System.exit(0);
+		}
+	
 	}
 	
 	
-	public void SIGN() {
-		
+	public void FRAC() throws IOException {
+		_tok = _lexer.next_token();
+		switch(_tok.sym){
+		case (sym.DIV):
+			_tok = _lexer.next_token();
+			eat(sym.INTEGER);
+			break;
+		}
 	}
 	
 	
-	public void FRAC() {
-		
+	public void F() throws IOException {
+		_tok = _lexer.next_token();
+		switch (_tok.sym){
+		case (sym.INTEGER):
+			FRAC();
+			R();
+			break;
+		case (sym.R1):
+		case (sym.R2):
+		case (sym.R3):
+			break;
+		default:
+			System.out.println(String.format("Error in position %d\n", _tok.parse_state));
+			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
+			System.exit(0);
+		}
+
 	}
 	
 	
-	public void F() {
-		
-	}
-	
-	
-	public void OP() {
-		
+	public void OP() throws IOException {
+		_tok = _lexer.next_token();
+		switch (_tok.sym){
+		case (sym.PLUS):
+		case (sym.MINUS):
+			break;
+		default:
+			System.out.println(String.format("Error in position %d\n", _tok.parse_state));
+			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
+			System.exit(0);
+		}
 	}
 }

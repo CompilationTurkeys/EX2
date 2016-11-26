@@ -43,6 +43,12 @@ public class Fraction {
 		this.denominator /= gcd;
 		return this;
 	}
+	
+	@Override
+	public String toString(){
+		return denominator == 1 ? Integer.toString(numerator) 
+				: Integer.toString(numerator) + "/" + Integer.toString(denominator);
+	}
 
 	public int GCD(int a, int b) {
 		return b==0 ? a : GCD(b, a%b);

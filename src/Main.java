@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Main {
@@ -39,8 +41,19 @@ public class Main {
 
 
 
-	private static void writeMatToFile(Fraction[][] outputMat, String outputMatrixFileName) {
-			
+	private static void writeMatToFile(Fraction[][] outputMat, String outputMatrixFileName) throws IOException {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(outputMatrixFileName)));
+			bw.write("[");
+			for (int i=0 ; i<MAT_SIZE ; i++){
+				for (int j=0;j<MAT_SIZE;j++){
+					bw.write(outputMat[i][j].toString() + " ");
+				}
+				if (i<MAT_SIZE-1){
+					bw.write(";");
+				}
+			}
+			bw.write("]");
+			bw.close();
 	}
 
 
@@ -71,7 +84,7 @@ public class Main {
 				matrix[i][j] = tempFrac;
 			}
 		}
-		
+		br.close();
 		return new Matrix(matrix);
 	}
 

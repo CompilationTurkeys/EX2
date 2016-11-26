@@ -17,6 +17,15 @@ public class Matrix {
 		}
 	}
 	
+	
+	public void rowSubtraction(int row1, int row2, Fraction factor)
+	{
+		for(int i=0;i<3;i++)
+		{
+			this._matrix[row1][i]= _matrix[row1][i].subtraction(this._matrix[row2][i].multiply(factor));
+		}
+	}
+	
 	public void rowMultiply(int row, Fraction factor){
 		for(int i=0;i<3;i++)
 		{

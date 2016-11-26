@@ -38,6 +38,9 @@ public class Main {
 		}catch (Exception e){
 			 e.printStackTrace();
         }
+		
+		System.out.println("Completed successfully.Output saved in " + outputMatrixFileName);
+
 	}
 
 
@@ -65,10 +68,9 @@ public class Main {
 		
 		String matString = br.readLine();
 		
-		matString.substring(1, matString.length()-1);
+		matString = matString.substring(1, matString.length()-1);
 		
-		String[] MatLines = matString.split(";");
-		
+		String[] MatLines = matString.split("; ");
 		Fraction[][] matrix = new Fraction[MAT_SIZE][MAT_SIZE];
 		
 		for (int i=0; i<MAT_SIZE; i++){
@@ -101,27 +103,32 @@ public class Main {
 			int curRow;
 			int newRow;
 			int newRow2;
-			curRow = opsString.charAt(1) - 1;
+			curRow = Character.getNumericValue(opsString.charAt(1)) - 1;
 			
-			if(opsString.charAt(4) == '>') { // case it's switching - R1<-->R2
-				newRow = (int)opsString.charAt(6) - 1;
+			if(opsString.charAt(4) == '>') { // case it's switching - R1<->R2
+				newRow = Character.getNumericValue(opsString.charAt(6)) - 1;
 				inputMatrix.switchRows(curRow, newRow);
 			}
-			else { // case it's R1<--R2 or R1<--(FRAC)R1 or R1<--R1(OP)(FRAC)R2
-				
-				if(opsString.charAt(5) == 'R'&&  curRow != (newRow = Character.getNumericValue(opsString.charAt(6)))) { 
-					inputMatrix.putRow(curRow, newRow);// case it's R1<--R2
-				}
-				else if(curRow == (newRow = Character.getNumericValue(opsString.charAt(6)))) { // R1<--R1(OP)(FRAC)R2
-					// R1<--R1(OP)(FRAC)R2
-					char op = opsString.charAt(7);
-					String secondRow = opsString.substring(op+1);
+			else { // case it's R1<-R2 or R1<-(FRAC)R1 or R1<-R1(OP)(FRAC)R2
+//				
+//				if(opsString.charAt(4) == 'R'&&  curRow != (newRow = Character.getNumericValue(opsString.charAt(5)))) { 
+//					inputMatrix.putRow(curRow, newRow);// case it's R1<-R2
+//				}
+				if(curRow == (newRow = Character.getNumericValue(opsString.charAt(5) -1))) { // R1<-R1(OP)(FRAC)R2
+					// R1<-R1(OP)(FRAC)R2
+					char op = opsString.charAt(6);
+					String secondRow = opsString.substring(7);
 					Fraction factor = new Fraction(secondRow.split("R")[0]);
-					newRow2 = Integer.parseInt(secondRow.split("R")[0]);
-					inputMatrix.rowAddition(curRow, newRow2, factor);
+					newRow2 = Integer.parseInt(secondRow.split("R")[1]) - 1;
+					if(op == '+') {
+						inputMatrix.rowAddition(curRow, newRow2, factor);
+					}
+					else { // op is '-'
+						inputMatrix.rowSubtraction(curRow, newRow2, factor);
+					}
 					
 				}
-				else { // R1<--(FRAC)R1
+				else { // R1<-(FRAC)R1
 					String rightSide = opsString.split("<-")[1];
 					Fraction factor = new Fraction(rightSide.split("R")[0]);
 					inputMatrix.rowMultiply(curRow, factor);
@@ -130,7 +137,7 @@ public class Main {
 		}
 		
 		br.close();
-		return new Matrix(matrix);
+		return inputMatrix;
 	}
 }
 

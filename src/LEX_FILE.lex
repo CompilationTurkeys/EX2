@@ -89,8 +89,10 @@ INTEGER			= 0 | [1-9][0-9]*
 "R1"				{ return symbol(sym.R1);}
 "R2"				{ return symbol(sym.R2);}
 "R3"				{ return symbol(sym.R3);}
+"/"      			{ return symbol(sym.DIV);}
 
 
+{LINETERMINATOR}	{ return symbol(sym.LINE_TERMINATOR);}
 {INTEGER}			{ return symbol(sym.INTEGER, new Integer(yytext()));}
 {WHITESPACE}		{ /* just skip what was found, do nothing */ }
 

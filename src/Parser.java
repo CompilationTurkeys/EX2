@@ -4,17 +4,12 @@ import java_cup.runtime.Symbol;
 
 public class Parser {
 
-	public Lexer   _lexer;
+	private Lexer   _lexer;
 	private Symbol _tok;
 	private int rowNum = 1;
-	public Fraction[][] _outputMatrix;
-	public Matrix 		_inputMatrix;
-	public static final int MAT_SIZE = 3;
 
-	public Parser(Lexer lexer, Matrix inputMat){
+	public Parser(Lexer lexer){
 		this._lexer = lexer;
-		this._outputMatrix = new Fraction[MAT_SIZE][MAT_SIZE];
-		this._inputMatrix = inputMat;
 	}
 
 	public void parse() throws IOException{
@@ -26,37 +21,35 @@ public class Parser {
 			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
 			System.out.println(String.format("Should be %s instead of %s", 
 					getTokenName(expectedToken),getTokenName(_tok.sym)));
-			System.exit(0);
+			System.exit(-1);
 		}
 	}
 
 	private String getTokenName(int token) {
 		switch(token){
-		case (0):
-			return "EOF";
-		case (1):
-			return "error";
-		case (2):
-			return "+";
-		case (3):
-			return "-";
-		case (4):
-			return "<-";
-		case (5):
-			return ">";
-		case (6):
-			return "R1";
-		case (7):
-			return "R2";
-		case (8):
-			return "R3";
-		case (9):
-			return "INT";
-		case (10):
-			return "LINE_TERMINATOR";
-
+			case (0):
+				return "EOF";
+			case (1):
+				return "error";
+			case (2):
+				return "+";
+			case (3):
+				return "-";
+			case (4):
+				return "<-";
+			case (5):
+				return ">";
+			case (6):
+				return "R1";
+			case (7):
+				return "R2";
+			case (8):
+				return "R3";
+			case (9):
+				return "INT";
+			case (10):
+				return "LINE_TERMINATOR";
 		}
-
 
 		return null;
 	}
@@ -64,29 +57,26 @@ public class Parser {
 	public void S() throws IOException {
 		_tok = _lexer.next_token();
 		switch(_tok.sym){
-
-		case(sym.R1):
-			_tok = _lexer.next_token();
-		eat(sym.ARROW);
-		A();
-		break;
-		case(sym.R2):
-			_tok = _lexer.next_token();
-		eat(sym.ARROW);
-		B();
-		break;
-		case(sym.R3):
-			_tok = _lexer.next_token();
-		eat(sym.ARROW);
-		C();
-		break;
-		default:
-			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
-			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
-			System.exit(0);
-
-		}
-
+			case(sym.R1):
+				_tok = _lexer.next_token();
+				eat(sym.ARROW);
+				A();
+				break;
+			case(sym.R2):
+				_tok = _lexer.next_token();
+				eat(sym.ARROW);
+				B();
+				break;
+			case(sym.R3):
+				_tok = _lexer.next_token();
+				eat(sym.ARROW);
+				C();
+			break;
+			default:
+				System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
+				System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
+				System.exit(-1);
+			}
 	}
 
 	public void R() throws IOException {
@@ -98,7 +88,7 @@ public class Parser {
 		default:
 			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
 			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
-			System.exit(0);
+			System.exit(-1);
 
 		}
 
@@ -107,66 +97,64 @@ public class Parser {
 	public void A() throws IOException {
 		_tok = _lexer.next_token();
 		switch(_tok.sym){
-		case (sym.R1):
-			OP();
-			F();
-			endOfRowOperation((_tok=_lexer.next_token()).sym);
-		break;
-		case (sym.GTSIGN):
-			_tok = _lexer.next_token();
-			R();
-			endOfRowOperation((_tok=_lexer.next_token()).sym);
+			case (sym.R1):
+				OP();
+				F();
+				endOfRowOperation((_tok=_lexer.next_token()).sym);
 			break;
-		default:
-			NUM();
-			if (_tok.sym == sym.INTEGER) {
+			case (sym.GTSIGN):
 				_tok = _lexer.next_token();
+				R();
+				endOfRowOperation((_tok=_lexer.next_token()).sym);
+				break;
+			default:
+				NUM();
+				if (_tok.sym == sym.INTEGER) {
+					_tok = _lexer.next_token();
+				}
+				eat(sym.R1);
+				endOfRowOperation((_tok=_lexer.next_token()).sym);
+				break;
 			}
-			eat(sym.R1);
-			endOfRowOperation((_tok=_lexer.next_token()).sym);
-			break;
-		}
 	}
 
-	private void endOfRowOperation(int token ) throws IOException {
+	private void endOfRowOperation(int token) throws IOException {
 		switch(token){
-		case (sym.EOF):
-			break;
-		case (sym.LINE_TERMINATOR):
-			rowNum++;
-			S();
-			break;
-		default:
-			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
-			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
-			System.exit(0);
-		}
-
-
+			case (sym.EOF):
+				break;
+			case (sym.LINE_TERMINATOR):
+				rowNum++;
+				S();
+				break;
+			default:
+				System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
+				System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
+				System.exit(-1);
+			}
 	}
 
 	public void B() throws IOException {
 		_tok = _lexer.next_token();
 		switch(_tok.sym){
-		case (sym.R2):
-			OP();
-			F();
-			endOfRowOperation((_tok=_lexer.next_token()).sym);
-			break;
-		case (sym.GTSIGN):
-			_tok = _lexer.next_token();
-			R();
-			endOfRowOperation((_tok=_lexer.next_token()).sym);
-			break;
-		default:
-			NUM();
-			if (_tok.sym == sym.INTEGER) {
+			case (sym.R2):
+				OP();
+				F();
+				endOfRowOperation((_tok=_lexer.next_token()).sym);
+				break;
+			case (sym.GTSIGN):
 				_tok = _lexer.next_token();
+				R();
+				endOfRowOperation((_tok=_lexer.next_token()).sym);
+				break;
+			default:
+				NUM();
+				if (_tok.sym == sym.INTEGER) {
+					_tok = _lexer.next_token();
+				}
+				eat(sym.R2);
+				endOfRowOperation((_tok=_lexer.next_token()).sym);
+				break;
 			}
-			eat(sym.R2);
-			endOfRowOperation((_tok=_lexer.next_token()).sym);
-			break;
-		}
 	}
 
 	public void C() throws IOException {
@@ -206,7 +194,7 @@ public class Parser {
 		default:
 			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
 			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
-			System.exit(0);
+			System.exit(-1);
 		}
 
 	}
@@ -245,7 +233,7 @@ public class Parser {
 		default:
 			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
 			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
-			System.exit(0);
+			System.exit(-1);
 		}
 
 	}
@@ -260,7 +248,7 @@ public class Parser {
 		default:
 			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
 			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
-			System.exit(0);
+			System.exit(-1);
 		}
 	}
 }

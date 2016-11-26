@@ -28,18 +28,16 @@ public class Main {
 		try{
                  
 			Lexer lexer = new Lexer(new FileReader(rowOpsFileName));
- 			
-			Parser parser = new Parser(lexer, inputMat);
+			Parser parser = new Parser(lexer);
 			parser.parse();
 			outputMat = parseRowOps(rowOpsFileName, inputMat);
 			writeMatToFile(outputMat._matrix, outputMatrixFileName);
-         
-                      
+                  
 		}catch (Exception e){
 			 e.printStackTrace();
         }
 		
-		System.out.println("Completed successfully.Output saved in " + outputMatrixFileName);
+		System.out.println("Completed successfully. Output saved in " + outputMatrixFileName);
 
 	}
 
@@ -50,10 +48,15 @@ public class Main {
 			bw.write("[");
 			for (int i=0 ; i<MAT_SIZE ; i++){
 				for (int j=0;j<MAT_SIZE;j++){
-					bw.write(outputMat[i][j].toString() + " ");
+					if (j == MAT_SIZE-1){
+						bw.write(outputMat[i][j].toString());
+					}
+					else{
+						bw.write(outputMat[i][j].toString()+" ");
+					}
 				}
 				if (i<MAT_SIZE-1){
-					bw.write(";");
+					bw.write("; ");
 				}
 			}
 			bw.write("]");
@@ -70,7 +73,10 @@ public class Main {
 		
 		matString = matString.substring(1, matString.length()-1);
 		
-		String[] MatLines = matString.split("; ");
+		String[] MatLines = matString.split(";");
+		for (int i=0; i<MAT_SIZE; i++){
+			MatLines[i] = MatLines[i].trim();
+		}
 		Fraction[][] matrix = new Fraction[MAT_SIZE][MAT_SIZE];
 		
 		for (int i=0; i<MAT_SIZE; i++){
@@ -96,8 +102,6 @@ public class Main {
 		BufferedReader br = new BufferedReader(new FileReader(new File(RowOperationsFileName)));
 		String opsString;
 				
-		Fraction[][] matrix = new Fraction[MAT_SIZE][MAT_SIZE];
-
 		while((opsString = br.readLine()) != null) { // iterate over lines of operations
 			opsString = opsString.replaceAll(" ","");
 			int curRow;
@@ -109,13 +113,10 @@ public class Main {
 				newRow = Character.getNumericValue(opsString.charAt(6)) - 1;
 				inputMatrix.switchRows(curRow, newRow);
 			}
-			else { // case it's R1<-R2 or R1<-(FRAC)R1 or R1<-R1(OP)(FRAC)R2
-//				
-//				if(opsString.charAt(4) == 'R'&&  curRow != (newRow = Character.getNumericValue(opsString.charAt(5)))) { 
-//					inputMatrix.putRow(curRow, newRow);// case it's R1<-R2
-//				}
-				if(curRow == (newRow = Character.getNumericValue(opsString.charAt(5) -1))) { // R1<-R1(OP)(FRAC)R2
-					// R1<-R1(OP)(FRAC)R2
+			else { // case it's R1<-(FRAC)R1 or R1<-R1(OP)(FRAC)R2
+
+				// R1<-R1(OP)(FRAC)R2
+				if(curRow == (newRow = Character.getNumericValue(opsString.charAt(5) -1))) { 
 					char op = opsString.charAt(6);
 					String secondRow = opsString.substring(7);
 					Fraction factor = new Fraction(secondRow.split("R")[0]);

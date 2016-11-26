@@ -1,15 +1,21 @@
 
 public class Parser {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public Lexer lexer;
+	public int value;
+	public Parser(Lexer lexer) {
+	 this.lexer = lexer;	
+	}
+	
+	public int Parse() {
+		S();
+		return this.value;
 	}
 	
 	public void S() {
-		
+		switch(lexer.next_token()):
+			
 	}
-
+	
 	public void R() {
 		
 	}

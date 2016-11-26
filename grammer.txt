@@ -8,7 +8,7 @@ B -> NUM R2 | R2 OP F | > R
 
 C -> NUM R3 | R3 OP F | > R
 
-NUM -> SIGN INT FRAC | epsilon
+NUM -> SIGN INT FRAC
 
 SIGN -> MINUS | epsilon
 

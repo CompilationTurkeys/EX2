@@ -98,4 +98,6 @@ INTEGER			= 0 | [1-9][0-9]*
 
 }
 
-[^]                 { System.out.println("Lexical error: illegal character "+"'"+yytext()+"'"); System.exit(-1);}
+[^]                 { System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %d", yyline+1));
+					  System.out.println("Unexpected token: "+ yytext());
+ 					  System.exit(-1);}

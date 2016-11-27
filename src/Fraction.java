@@ -59,6 +59,16 @@ public class Fraction {
 	
 	@Override
 	public String toString(){
+		// If one of the fraction components is negative leave the sign at the enumerator else they are both positive
+		if ((denominator<0)^(numerator<0)){
+			denominator = Math.abs(denominator);
+			numerator = Math.abs(numerator);
+			numerator = -numerator;
+		}
+		else if ((denominator<0)&&(numerator<0)){
+			denominator = Math.abs(denominator);
+			numerator = Math.abs(numerator);
+		}
 		return denominator == 1 ? Integer.toString(numerator) 
 				: Integer.toString(numerator) + "/" + Integer.toString(denominator);
 	}

@@ -18,7 +18,7 @@ public class Parser {
 
 	private void eat(int expectedToken) throws IOException{
 		if (_tok.sym != expectedToken){
-			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
+			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %d",rowNum));
 			System.out.println(String.format("Should be %s instead of %s", 
 					getTokenName(expectedToken),getTokenName(_tok.sym)));
 			System.exit(-1);
@@ -73,7 +73,7 @@ public class Parser {
 				C();
 			break;
 			default:
-				System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
+				System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %d",rowNum));
 				System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
 				System.exit(-1);
 			}
@@ -86,7 +86,7 @@ public class Parser {
 		case (sym.R3):
 			break;
 		default:
-			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
+			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %d",rowNum));
 			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
 			System.exit(-1);
 
@@ -127,7 +127,7 @@ public class Parser {
 				S();
 				break;
 			default:
-				System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
+				System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %d",rowNum));
 				System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
 				System.exit(-1);
 			}
@@ -192,7 +192,7 @@ public class Parser {
 			FRAC();
 			break;
 		default:
-			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
+			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %d",rowNum));
 			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
 			System.exit(-1);
 		}
@@ -225,13 +225,8 @@ public class Parser {
 			}
 			R();
 			break;
-		case (sym.R1):
-		case (sym.R2):
-		case (sym.R3):
-			_tok = _lexer.next_token();
-			break;
 		default:
-			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
+			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %d",rowNum));
 			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
 			System.exit(-1);
 		}
@@ -246,7 +241,7 @@ public class Parser {
 		case (sym.MINUS):
 			break;
 		default:
-			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %s",rowNum));
+			System.out.println(String.format("ILLEGAL ROW OPERATION IN LINE %d",rowNum));
 			System.out.println("Unexpected token: "+ getTokenName(_tok.sym));
 			System.exit(-1);
 		}
